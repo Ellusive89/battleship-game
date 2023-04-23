@@ -61,7 +61,7 @@ def place_ships(board):
                     break
 
 
-def get_guess():
+def get_guess(previous_guesses):
     while True:
         guess = input("\nEnter your guess (e.g. A1): ").upper()
         if (len(guess) != 2 or guess[0] not in LETT_TO_NUM
@@ -69,7 +69,12 @@ def get_guess():
                 or int(guess[1]) not in range(1, BOARD_SIZE + 1)):
             print("Invalid guess. Please try again.")
         else:
-            return LETT_TO_NUM[guess[0]], int(guess[1]) - 1
+            x, y = LETT_TO_NUM[guess[0]], int(guess[1]) - 1
+            if (x, y) in previous_guesses:
+                print("You have already guessed that spot. Please try again.")
+            else:
+                previous_guesses.add((x, y))
+                return x, y
 
 
 def computer_guess(player_board, hit_locations):
@@ -106,12 +111,14 @@ def play_game():
     num_hits = 0
     computer_hit_locations = []
 
+    previous_guesses = set()
+
     player_ship_count = len(SHIP_SIZE)
     computer_ship_count = len(SHIP_SIZE)
 
     while True:
         print_board(player_board, computer_board, player_name)
-        x, y = get_guess()
+        x, y = get_guess(previous_guesses)
 
         if computer_board[y][x] != " ":
             print("Hit!")
