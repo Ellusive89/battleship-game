@@ -7,10 +7,12 @@ SHIP_SYMBOLS = {1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6'}
 
 
 def create_empty_board():
+    """Create an empty board of the specified size."""
     return [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
 
 
 def get_player_name():
+    """Prompt the user for their name and validate the input."""
     while True:
         player_name = input("Enter your name: ").upper()
         if player_name.isalpha():
@@ -20,7 +22,7 @@ def get_player_name():
 
 
 def print_board(player_board, computer_board, player_name):
-    """Prints the game board with the player's name."""
+    """Display the player and computer game boards."""
     print(f"\n== {player_name}'s Board ==")
     print("  A B C D E F G H")
     for i in range(BOARD_SIZE):
@@ -42,6 +44,7 @@ def print_board(player_board, computer_board, player_name):
 
 
 def place_ships(board):
+    """Place ships randomly on the given board."""
     for size in SHIP_SIZE:
         while True:
             orientation = random.choice(["horizontal", "vertical"])
@@ -62,6 +65,7 @@ def place_ships(board):
 
 
 def get_guess(previous_guesses):
+    """Prompt the user for a guess and validate the input."""
     while True:
         guess = input("\nEnter your guess (e.g. A1): ").upper()
         if (len(guess) != 2 or guess[0] not in LETT_TO_NUM
@@ -78,6 +82,7 @@ def get_guess(previous_guesses):
 
 
 def computer_guess(player_board, hit_locations):
+    """Generate a computer guess based on hit locations."""
     if hit_locations:
         coord = random.choice(hit_locations)
         hit_locations.remove(coord)
@@ -90,10 +95,12 @@ def computer_guess(player_board, hit_locations):
 
 
 def random_coords():
+    """Return a tuple of random row and column indices."""
     return random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
 
 
 def check_ship_sunk(board, ship_symbol, ship_count):
+    """Check if a ship with the given symbol is sunk on the board."""
     for row in board:
         if ship_symbol in row:
             return False, ship_count
@@ -103,6 +110,7 @@ def check_ship_sunk(board, ship_symbol, ship_count):
 
 
 def play_game():
+    """Run the main game loop."""
     player_board = create_empty_board()
     computer_board = create_empty_board()
     place_ships(player_board)
@@ -173,6 +181,7 @@ def play_game():
 
 
 def main():
+    """Initialize and run the game."""
 
     print("=== Welcome to Battleship Game! ===")
     print("\nInstructions:")
