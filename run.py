@@ -34,7 +34,7 @@ def print_board(player_board, computer_board, player_name):
     for i in range(BOARD_SIZE):
         row = [str(i+1)]
         for j in range(BOARD_SIZE):
-            if computer_board[i][j] == "X" or computer_board[i][j] == "O":
+            if computer_board[i][j] == "X" or computer_board[i][j] == "*":
                 row.append(computer_board[i][j])
             else:
                 row.append(" ")
@@ -76,7 +76,7 @@ def computer_guess(player_board, hit_locations):
         hit_locations.remove((x, y))
     else:
         x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
-        while player_board[y][x] in ["X", "O"]:
+        while player_board[y][x] in ["X", "*"]:
             x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
     return x, y
 
@@ -118,7 +118,7 @@ def play_game():
                 break
         else:
             print("Miss.")
-            computer_board[y][x] = "O"
+            computer_board[y][x] = "*"
 
         print("Computer's turn...")
         x, y = computer_guess(player_board, computer_hit_locations)
@@ -134,7 +134,7 @@ def play_game():
                 break
         else:
             print("Computer miss.")
-            player_board[y][x] = "O"
+            player_board[y][x] = "*"
 
         num_hits += 1
 
@@ -155,6 +155,13 @@ def play_game():
 def main():
 
     print("=== Welcome to Battleship Game! ===")
+    print("\nInstructions:")
+    print("1. The board size is 8x8.")
+    print("2. There are 6 ships with sizes ranging from 1 to 6.")
+    print("3. To make a guess, enter the row letter and column number (e.g., A1).")
+    print("4. A hit will be marked with an 'X' and a miss with an '*'.")
+    print("5. The game ends when either you or the computer sinks all the ships.")
+    print("6. Have fun!\n")
     while True:
         play_game()
         play_again = input("Do you want to play again? (Y/N): ").upper()
