@@ -30,11 +30,16 @@ def print_board(board, player_name):
         print(" ".join(row))
 
 
+def play_game():
+    board = create_empty_board()
+    player_name = get_player_name()
+
+
 def main():
 
     print("=== Welcome to Battleship Game! ===")
-    create_empty_board()
-    player_name = get_player_name()
+    while True:
+        play_game()
 
 
 main()
