@@ -19,14 +19,14 @@ def get_player_name():
             print("Please enter a name containing only letters.")
 
 
-def print_board(board, player_name):
+def print_board(player_board, computer_board, player_name):
     """Prints the game board with the player's name."""
     print(f"\n{player_name}'s Board")
     print("  A B C D E F G H")
     for i in range(BOARD_SIZE):
         row = [str(i+1)]
         for j in range(BOARD_SIZE):
-            row.append(board[i][j])
+            row.append(player_board[i][j])
         print(f"{'|'.join(row)}|")
 
     print("\nComputer's Board")
