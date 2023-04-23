@@ -81,6 +81,13 @@ def computer_guess(player_board, hit_locations):
     return x, y
 
 
+def check_ship_sunk(board, ship_symbol, ship_count):
+    for row in board:
+        if ship_symbol in row:
+            return False, ship_count
+    print(f"Ship {ship_symbol} has been sunk!")
+    ship_count -= 1
+    return True, ship_count
 def play_game():
     player_board = create_empty_board()
     computer_board = create_empty_board()
