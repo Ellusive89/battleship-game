@@ -24,10 +24,10 @@ def print_board(board, player_name):
     print(f"\n{player_name}'s Board")
     print("  A B C D E F G H")
     for i in range(BOARD_SIZE):
-        row = [str(i + 1)]
+        row = [str(i+1)]
         for j in range(BOARD_SIZE):
             row.append(board[i][j])
-        print(" ".join(row))
+        print(f"{'|'.join(row)}|")
 
 
 def place_ships(board):
