@@ -29,6 +29,17 @@ def print_board(board, player_name):
             row.append(board[i][j])
         print(f"{'|'.join(row)}|")
 
+    print("\nComputer's Board")
+    print("  A B C D E F G H")
+    for i in range(BOARD_SIZE):
+        row = [str(i+1)]
+        for j in range(BOARD_SIZE):
+            if computer_board[i][j] == "X" or computer_board[i][j] == "O":
+                row.append(computer_board[i][j])
+            else:
+                row.append(" ")
+        print(f"{'|'.join(row)}|")
+
 
 def place_ships(board):
     for size in SHIP_SIZE:
@@ -50,13 +61,34 @@ def place_ships(board):
                     break
 
 
+def get_guess():
+    while True:
+        guess = input("Enter your guess (e.g. A1): ").upper()
+        if len(guess) != 2 or guess[0] not in LETT_TO_NUM or not guess[1].isdigit() or int(guess[1]) not in range(1, BOARD_SIZE + 1):
+            print("Invalid guess. Please try again.")
+        else:
+            return LETT_TO_NUM[guess[0]], int(guess[1]) - 1
+
+
 def play_game():
     board = create_empty_board()
     place_ships(board)
     player_name = get_player_name()
+    num_guesses = 0
     while True:
         print_board(board, player_name)
-        break
+        x, y = get_guess()
+        if board[y][x] != " ":
+            print("Hit!")
+            board[y][x] = "X"
+            if all(board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if board[i][j] != " "):
+                print_board(board, player_name)
+                print(f"Congratulations, {player_name}! You won in {num_guesses} guesses.")
+                break
+        else:
+            print("Miss.")
+            board[y][x] = "O"
+        num_guesses += 1
 
 
 def main():
