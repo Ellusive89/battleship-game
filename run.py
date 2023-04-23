@@ -64,7 +64,9 @@ def place_ships(board):
 def get_guess():
     while True:
         guess = input("\nEnter your guess (e.g. A1): ").upper()
-        if len(guess) != 2 or guess[0] not in LETT_TO_NUM or not guess[1].isdigit() or int(guess[1]) not in range(1, BOARD_SIZE + 1):
+        if (len(guess) != 2 or guess[0] not in LETT_TO_NUM
+                or not guess[1].isdigit()
+                or int(guess[1]) not in range(1, BOARD_SIZE + 1)):
             print("Invalid guess. Please try again.")
         else:
             return LETT_TO_NUM[guess[0]], int(guess[1]) - 1
@@ -72,13 +74,18 @@ def get_guess():
 
 def computer_guess(player_board, hit_locations):
     if hit_locations:
-        x, y = random.choice(hit_locations)
-        hit_locations.remove((x, y))
+        coord = random.choice(hit_locations)
+        hit_locations.remove(coord)
+        x, y = coord
     else:
-        x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
+        x, y = random_coords()
         while player_board[y][x] in ["X", "*"]:
-            x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
+            x, y = random_coords()
     return x, y
+
+
+def random_coords():
+    return random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
 
 
 def check_ship_sunk(board, ship_symbol, ship_count):
@@ -110,11 +117,13 @@ def play_game():
             print("Hit!")
             ship_symbol = computer_board[y][x]
             computer_board[y][x] = "X"
-            sunk, player_ship_count = check_ship_sunk(computer_board, ship_symbol, player_ship_count)
+            sunk, player_ship_count = check_ship_sunk(
+                computer_board, ship_symbol, player_ship_count)
 
             if sunk and player_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
+                print(f"Congratulations, {player_name}!")
+                print(f"\nYou won in {num_hits} hits.")
                 break
         else:
             print("Miss.")
@@ -126,7 +135,8 @@ def play_game():
             print("Computer hit!")
             ship_symbol = player_board[y][x]
             player_board[y][x] = "X"
-            sunk, computer_ship_count = check_ship_sunk(player_board, ship_symbol, computer_ship_count)
+            sunk, computer_ship_count = check_ship_sunk(
+                player_board, ship_symbol, computer_ship_count)
 
             if sunk and computer_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
@@ -138,13 +148,16 @@ def play_game():
 
         num_hits += 1
 
-        if all(cell == "X" or cell == " " for row in computer_board for cell in row):
+        if all(cell == "X" or cell == " " for row in computer_board 
+                for cell in row):
             print_board(player_board, computer_board, player_name)
-            print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
+            print(f"Congratulations, {player_name}!")
+            print(f"\nYou won in {num_hits} hits.")
             break
         elif computer_ship_count == 0:
             print_board(player_board, computer_board, player_name)
-            print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
+            print(f"Congratulations, {player_name}!")
+            print(f"\nYou won in {num_hits} hits.")
             break
         elif player_ship_count == 0:
             print_board(player_board, computer_board, player_name)
@@ -158,9 +171,11 @@ def main():
     print("\nInstructions:")
     print("1. The board size is 8x8.")
     print("2. There are 6 ships with sizes ranging from 1 to 6.")
-    print("3. To make a guess, enter the row letter and column number (e.g., A1).")
+    print("3. To make a guess, enter the row letter and column number.")
+    print("   == e.g., A1 ==")
     print("4. A hit will be marked with an 'X' and a miss with an '*'.")
-    print("5. The game ends when either you or the computer sinks all the ships.")
+    print("5. The game ends when either you or the computer")
+    print("   sinks all the ships.")
     print("6. Have fun!\n")
     while True:
         play_game()
