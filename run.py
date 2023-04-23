@@ -79,23 +79,39 @@ def computer_guess(player_board):
 
 
 def play_game():
-    board = create_empty_board()
-    place_ships(board)
+    player_board = create_empty_board()
+    computer_board = create_empty_board()
+    place_ships(player_board)
+    place_ships(computer_board)
     player_name = get_player_name()
     num_guesses = 0
     while True:
-        print_board(board, player_name)
+        print_board(player_board, computer_board, player_name)
         x, y = get_guess()
-        if board[y][x] != " ":
+        if computer_board[y][x] != " ":
             print("Hit!")
-            board[y][x] = "X"
-            if all(board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if board[i][j] != " "):
-                print_board(board, player_name)
+            computer_board[y][x] = "X"
+            if all(computer_board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if computer_board[i][j] != " "):
+                print_board(player_board, computer_board, player_name)
                 print(f"Congratulations, {player_name}! You won in {num_guesses} guesses.")
                 break
         else:
             print("Miss.")
-            board[y][x] = "O"
+            computer_board[y][x] = "O"
+
+        print("Computer's turn...")
+        x, y = computer_guess(player_board)
+        if player_board[y][x] != " ":
+            print("Computer hit!")
+            player_board[y][x] = "X"
+            if all(player_board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if player_board[i][j] != " "):
+                print_board(player_board, computer_board, player_name)
+                print(f"Sorry, {player_name}. The computer won!")
+                break
+        else:
+            print("Computer miss.")
+            player_board[y][x] = "O"
+
         num_guesses += 1
 
 
