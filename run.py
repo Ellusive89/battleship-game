@@ -21,7 +21,7 @@ def get_player_name():
 
 def print_board(player_board, computer_board, player_name):
     """Prints the game board with the player's name."""
-    print(f"\n{player_name}'s Board")
+    print(f"\n== {player_name}'s Board ==")
     print("  A B C D E F G H")
     for i in range(BOARD_SIZE):
         row = [str(i+1)]
@@ -63,7 +63,7 @@ def place_ships(board):
 
 def get_guess():
     while True:
-        guess = input("Enter your guess (e.g. A1): ").upper()
+        guess = input("\nEnter your guess (e.g. A1): ").upper()
         if len(guess) != 2 or guess[0] not in LETT_TO_NUM or not guess[1].isdigit() or int(guess[1]) not in range(1, BOARD_SIZE + 1):
             print("Invalid guess. Please try again.")
         else:
@@ -88,33 +88,47 @@ def check_ship_sunk(board, ship_symbol, ship_count):
     print(f"Ship {ship_symbol} has been sunk!")
     ship_count -= 1
     return True, ship_count
+
+
 def play_game():
     player_board = create_empty_board()
     computer_board = create_empty_board()
     place_ships(player_board)
     place_ships(computer_board)
     player_name = get_player_name()
-    num_guesses = 0
+    num_hits = 0
+    computer_hit_locations = []
+
+    player_ship_count = len(SHIP_SIZE)
+    computer_ship_count = len(SHIP_SIZE)
+
     while True:
         print_board(player_board, computer_board, player_name)
         x, y = get_guess()
+
         if computer_board[y][x] != " ":
             print("Hit!")
+            ship_symbol = computer_board[y][x]
             computer_board[y][x] = "X"
-            if all(computer_board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if computer_board[i][j] != " "):
+            sunk, player_ship_count = check_ship_sunk(computer_board, ship_symbol, player_ship_count)
+
+            if sunk and player_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(f"Congratulations, {player_name}! You won in {num_guesses} guesses.")
+                print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
                 break
         else:
             print("Miss.")
             computer_board[y][x] = "O"
 
         print("Computer's turn...")
-        x, y = computer_guess(player_board)
+        x, y = computer_guess(player_board, computer_hit_locations)
         if player_board[y][x] != " ":
             print("Computer hit!")
+            ship_symbol = player_board[y][x]
             player_board[y][x] = "X"
-            if all(player_board[i][j] == "X" for i in range(BOARD_SIZE) for j in range(BOARD_SIZE) if player_board[i][j] != " "):
+            sunk, computer_ship_count = check_ship_sunk(player_board, ship_symbol, computer_ship_count)
+
+            if sunk and computer_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
                 print(f"Sorry, {player_name}. The computer won!")
                 break
@@ -122,7 +136,20 @@ def play_game():
             print("Computer miss.")
             player_board[y][x] = "O"
 
-        num_guesses += 1
+        num_hits += 1
+
+        if all(cell == "X" or cell == " " for row in computer_board for cell in row):
+            print_board(player_board, computer_board, player_name)
+            print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
+            break
+        elif computer_ship_count == 0:
+            print_board(player_board, computer_board, player_name)
+            print(f"Congratulations, {player_name}! You won in {num_hits} hits.")
+            break
+        elif player_ship_count == 0:
+            print_board(player_board, computer_board, player_name)
+            print(f"Sorry, {player_name}. The computer won!")
+            break
 
 
 def main():
