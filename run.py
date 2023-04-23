@@ -70,12 +70,15 @@ def get_guess():
             return LETT_TO_NUM[guess[0]], int(guess[1]) - 1
 
 
-def computer_guess(player_board):
-    while True:
-        x = random.randint(0, BOARD_SIZE - 1)
-        y = random.randint(0, BOARD_SIZE - 1)
-        if player_board[y][x] not in ["X", "O"]:
-            return x, y
+def computer_guess(player_board, hit_locations):
+    if hit_locations:
+        x, y = random.choice(hit_locations)
+        hit_locations.remove((x, y))
+    else:
+        x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
+        while player_board[y][x] in ["X", "O"]:
+            x, y = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
+    return x, y
 
 
 def play_game():
