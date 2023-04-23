@@ -163,18 +163,18 @@ def play_game():
 
         num_hits += 1
 
-        if all(cell == "X" or cell == " " for row in computer_board 
+        if all(cell == "X" or cell == " " for row in computer_board
                 for cell in row):
             print_board(player_board, computer_board, player_name)
             print(f"Congratulations, {player_name}!")
             print(f"\nYou won in {num_hits} hits.")
             break
-        elif computer_ship_count == 0:
+        if computer_ship_count == 0:
             print_board(player_board, computer_board, player_name)
             print(f"Congratulations, {player_name}!")
             print(f"\nYou won in {num_hits} hits.")
             break
-        elif player_ship_count == 0:
+        if player_ship_count == 0:
             print_board(player_board, computer_board, player_name)
             print(f"Sorry, {player_name}. The computer won!")
             break
