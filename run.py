@@ -30,9 +30,33 @@ def print_board(board, player_name):
         print(" ".join(row))
 
 
+def place_ships(board):
+    for size in SHIP_SIZE:
+        while True:
+            orientation = random.choice(["horizontal", "vertical"])
+            if orientation == "horizontal":
+                x = random.randint(0, BOARD_SIZE - size)
+                y = random.randint(0, BOARD_SIZE - 1)
+                if all(board[y][x + i] == " " for i in range(size)):
+                    for i in range(size):
+                        board[y][x + i] = SHIP_SYMBOLS[size]
+                    break
+            else:
+                x = random.randint(0, BOARD_SIZE - 1)
+                y = random.randint(0, BOARD_SIZE - size)
+                if all(board[y + i][x] == " " for i in range(size)):
+                    for i in range(size):
+                        board[y + i][x] = SHIP_SYMBOLS[size]
+                    break
+
+
 def play_game():
     board = create_empty_board()
+    place_ships(board)
     player_name = get_player_name()
+    while True:
+        print_board(board, player_name)
+        break
 
 
 def main():
@@ -40,6 +64,10 @@ def main():
     print("=== Welcome to Battleship Game! ===")
     while True:
         play_game()
+        play_again = input("Do you want to play again? (Y/N): ").upper()
+        if play_again == "N":
+            break
+    print("Thank you for playing Battleship Game!")
 
 
 main()
