@@ -1,4 +1,5 @@
 import random
+from colorama import Fore, init
 
 BOARD_SIZE = 8
 SHIP_SIZE = [1, 2, 3, 4, 5, 6]
@@ -14,11 +15,11 @@ def create_empty_board():
 def get_player_name():
     """Prompt the user for their name and validate the input."""
     while True:
-        player_name = input("Enter your name: ").upper()
+        player_name = input(Fore.CYAN + "Your name?: " + Fore.RESET).upper()
         if player_name.isalpha():
             return player_name
         else:
-            print("Please enter a name containing only letters.")
+            print(Fore.RED + "Please enter only letters." + Fore.RESET)
 
 
 def print_board(player_board, computer_board, player_name):
@@ -28,7 +29,12 @@ def print_board(player_board, computer_board, player_name):
     for i in range(BOARD_SIZE):
         row = [str(i+1)]
         for j in range(BOARD_SIZE):
-            row.append(player_board[i][j])
+            if player_board[i][j] == "X":
+                row.append(Fore.RED + player_board[i][j] + Fore.RESET)
+            elif player_board[i][j] == "*":
+                row.append(Fore.BLUE + player_board[i][j] + Fore.RESET)
+            else:
+                row.append(player_board[i][j])
         print(f"{'|'.join(row)}|")
 
     print("\nComputer's Board")
@@ -36,8 +42,10 @@ def print_board(player_board, computer_board, player_name):
     for i in range(BOARD_SIZE):
         row = [str(i+1)]
         for j in range(BOARD_SIZE):
-            if computer_board[i][j] == "X" or computer_board[i][j] == "*":
-                row.append(computer_board[i][j])
+            if computer_board[i][j] == "X":
+                row.append(Fore.RED + computer_board[i][j] + Fore.RESET)
+            elif computer_board[i][j] == "*":
+                row.append(Fore.BLUE + computer_board[i][j] + Fore.RESET)
             else:
                 row.append(" ")
         print(f"{'|'.join(row)}|")
@@ -67,15 +75,17 @@ def place_ships(board):
 def get_guess(previous_guesses):
     """Prompt the user for a guess and validate the input."""
     while True:
-        guess = input("\nEnter your guess (e.g. A1): ").upper()
+        guess = input(Fore.CYAN + "\nGuess (e.g. A1): " + Fore.RESET).upper()
         if (len(guess) != 2 or guess[0] not in LETT_TO_NUM
                 or not guess[1].isdigit()
                 or int(guess[1]) not in range(1, BOARD_SIZE + 1)):
-            print("Invalid guess. Please try again.")
+            print(Fore.YELLOW + "Invalid guess.")
+            print("Please try again." + Fore.RESET)
         else:
             x, y = LETT_TO_NUM[guess[0]], int(guess[1]) - 1
             if (x, y) in previous_guesses:
-                print("You have already guessed that spot. Please try again.")
+                print(Fore.MAGENTA + "You have already guessed that spot.")
+                print("Please try again." + Fore.RESET)
             else:
                 previous_guesses.add((x, y))
                 return x, y
@@ -104,7 +114,7 @@ def check_ship_sunk(board, ship_symbol, ship_count):
     for row in board:
         if ship_symbol in row:
             return False, ship_count
-    print(f"Ship {ship_symbol} has been sunk!")
+    print(Fore.RED + f"Ship {ship_symbol} has been sunk!" + Fore.RESET)
     ship_count -= 1
     return True, ship_count
 
@@ -129,7 +139,7 @@ def play_game():
         x, y = get_guess(previous_guesses)
 
         if computer_board[y][x] != " ":
-            print("Hit!")
+            print(Fore.RED + "Hit!" + Fore.RESET)
             ship_symbol = computer_board[y][x]
             computer_board[y][x] = "X"
             sunk, player_ship_count = check_ship_sunk(
@@ -137,17 +147,17 @@ def play_game():
 
             if sunk and player_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(f"Congratulations, {player_name}!")
-                print(f"\nYou won in {num_hits} hits.")
+                print(Fore.GREEN + f"Congratulations, {player_name}!")
+                print(f"\nYou won in {num_hits} hits." + Fore.RESET)
                 break
         else:
-            print("Miss.")
+            print(Fore.YELLOW + "Miss." + Fore.RESET)
             computer_board[y][x] = "*"
 
-        print("Computer's turn...")
+        print(Fore.CYAN + "Computer's turn..." + Fore.RESET)
         x, y = computer_guess(player_board, computer_hit_locations)
         if player_board[y][x] != " ":
-            print("Computer hit!")
+            print(Fore.RED + "Computer hit!" + Fore.RESET)
             ship_symbol = player_board[y][x]
             player_board[y][x] = "X"
             sunk, computer_ship_count = check_ship_sunk(
@@ -155,10 +165,11 @@ def play_game():
 
             if sunk and computer_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(f"Sorry, {player_name}. The computer won!")
+                print(Fore.RED + f"Sorry, {player_name}.")
+                print("The computer won!" + Fore.RESET)
                 break
         else:
-            print("Computer miss.")
+            print(Fore.YELLOW + "Computer miss." + Fore.RESET)
             player_board[y][x] = "*"
 
         num_hits += 1
@@ -166,25 +177,27 @@ def play_game():
         if all(cell == "X" or cell == " " for row in computer_board
                 for cell in row):
             print_board(player_board, computer_board, player_name)
-            print(f"Congratulations, {player_name}!")
-            print(f"\nYou won in {num_hits} hits.")
+            print(Fore.GREEN + f"Congratulations, {player_name}!")
+            print(f"\nYou won in {num_hits} hits." + Fore.RESET)
             break
         if computer_ship_count == 0:
             print_board(player_board, computer_board, player_name)
-            print(f"Congratulations, {player_name}!")
-            print(f"\nYou won in {num_hits} hits.")
+            print(Fore.GREEN + f"Congratulations, {player_name}!")
+            print(f"\nYou won in {num_hits} hits." + Fore.RESET)
             break
         if player_ship_count == 0:
             print_board(player_board, computer_board, player_name)
-            print(f"Sorry, {player_name}. The computer won!")
+            print(Fore.RED + f"Sorry, {player_name}.")
+            print("The computer won!" + Fore.RESET)
             break
 
 
 def main():
     """Initialize and run the game."""
+    init(autoreset=True)
 
-    print("=== Welcome to Battleship Game! ===")
-    print("\nInstructions:")
+    print(Fore.CYAN + "=== Welcome to Battleship Game! ===" + Fore.RESET)
+    print(Fore.GREEN + "\nInstructions:" + Fore.RESET)
     print("1. The board size is 8x8.")
     print("2. There are 6 ships with sizes ranging from 1 to 6.")
     print("3. To make a guess, enter the row letter and column number.")
@@ -192,13 +205,13 @@ def main():
     print("4. A hit will be marked with an 'X' and a miss with an '*'.")
     print("5. The game ends when either you or the computer")
     print("   sinks all the ships.")
-    print("6. Have fun!\n")
+    print(Fore.GREEN + "6. Have fun!\n" + Fore.RESET)
     while True:
         play_game()
         play_again = input("Do you want to play again? (Y/N): ").upper()
         if play_again == "N":
             break
-    print("Thank you for playing Battleship Game!")
+    print(Fore.GREEN + "Thank you for playing Battleship Game!" + Fore.RESET)
 
 
 main()
