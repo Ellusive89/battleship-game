@@ -85,7 +85,7 @@ def get_guess(previous_guesses):
             x, y = LETT_TO_NUM[guess[0]], int(guess[1]) - 1
             if (x, y) in previous_guesses:
                 print(Fore.MAGENTA + "You have already guessed that spot.")
-                print("Please try again." + Fore.RESET)
+                print(Fore.MAGENTA + "Please try again." + Fore.RESET)
             else:
                 previous_guesses.add((x, y))
                 return x, y
@@ -147,8 +147,8 @@ def play_game():
 
             if sunk and player_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(Fore.GREEN + f"Congratulations, {player_name}!")
-                print(f"\nYou won in {num_hits} hits." + Fore.RESET)
+                print(Fore.GREEN + f"\nCongratulations, {player_name}!")
+                print(Fore.GREEN + f"You won in {num_hits} hits." + Fore.RESET)
                 break
         else:
             print(Fore.YELLOW + "Miss." + Fore.RESET)
@@ -165,8 +165,8 @@ def play_game():
 
             if sunk and computer_ship_count == 0:
                 print_board(player_board, computer_board, player_name)
-                print(Fore.RED + f"Sorry, {player_name}.")
-                print("The computer won!" + Fore.RESET)
+                print(Fore.RED + f"\nSorry, {player_name}.")
+                print(Fore.RED + "The computer won!" + Fore.RESET)
                 break
         else:
             print(Fore.YELLOW + "Computer miss." + Fore.RESET)
@@ -178,17 +178,17 @@ def play_game():
                 for cell in row):
             print_board(player_board, computer_board, player_name)
             print(Fore.GREEN + f"Congratulations, {player_name}!")
-            print(f"\nYou won in {num_hits} hits." + Fore.RESET)
+            print(Fore.GREEN + f"\nYou won in {num_hits} hits." + Fore.RESET)
             break
         if computer_ship_count == 0:
             print_board(player_board, computer_board, player_name)
             print(Fore.GREEN + f"Congratulations, {player_name}!")
-            print(f"\nYou won in {num_hits} hits." + Fore.RESET)
+            print(Fore.GREEN + f"\nYou won in {num_hits} hits." + Fore.RESET)
             break
         if player_ship_count == 0:
             print_board(player_board, computer_board, player_name)
             print(Fore.RED + f"Sorry, {player_name}.")
-            print("The computer won!" + Fore.RESET)
+            print(Fore.RED + "The computer won!" + Fore.RESET)
             break
 
 
