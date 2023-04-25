@@ -73,7 +73,7 @@ The user plays against the computer, taking turns to guess the location of the o
 - __Through testing there are no currently known bugs within the game.__
 
 ## Testing
-I have extensively tested the game to ensure it is functional and responsive.
+### I have extensively tested the game to ensure it is functional and responsive.
 - __Test user name input to ensure it accepts only valid names (alphabetic characters) and rejects invalid ones.__
 - __Ensure ships are placed randomly and do not overlap on the board.__
 - __Ensure game only accepts valid guesses (correct format and not previously guessed) and rejects invalid ones.__
@@ -101,7 +101,7 @@ I have extensively tested the game to ensure it is functional and responsive.
 
 ## Deployment
 
-# To deploy the game, I used Heroku CLI. Here are the steps to follow:
+### To deploy the game, I used Heroku CLI. Here are the steps to follow:
 - __Create a Heroku account and log in. From the dashboard, click "New" to create a new app.__
 - __Choose a unique name for your app and select your region. Click "Create app" to create the app.__
 - __Go to "Settings" and navigate to Config Vars. Add a new Config Var with the following key-value pair: KEY = PORT, VALUE = 8000 (this is the only variable needed for this app).__
