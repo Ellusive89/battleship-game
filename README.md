@@ -23,32 +23,41 @@ The user plays against the computer, taking turns to guess the location of the o
 ### Features
 
 - __The game is played on an 8x8 board, with 6 ships of different sizes ranging from 1 to 6. Game provide instructions how to play.__
+
 ![Instructions](https://github.com/Ellusive89/battleship-game/blob/main/media/instructions.png)
 
 - __The user is prompted to enter their name at the start of the game.__
 
 - __The user and the computer each have their own game board, which shows the locations of their ships.__
+
 ![User and computer board](https://github.com/Ellusive89/battleship-game/blob/main/media/user-computer-board.png)
 
 - __To make a guess, the user enters the row letter and column number of the position they want to guess, e.g., "A1". A hit will be marked with an "X" on the opponent's board, while a miss will be marked with an "*".__
+
 ![Hit and miss](https://github.com/Ellusive89/battleship-game/blob/main/media/hit-and-miss.png)
 
 - __The game will ensure that the input data is valid.__
+
 ![Input](https://github.com/Ellusive89/battleship-game/blob/main/media/invali-guess.png)
 
 - __The computer generates its guesses randomly, but will focus its guesses around hit locations to increase the chances of hitting a ship.__
 
 - __The game will supply you with information on the length of a sunken ship.__
+
 ![Ship lenght](https://github.com/Ellusive89/battleship-game/blob/main/media/ship3-sunk.png)
+
 ![Ship lenght2](https://github.com/Ellusive89/battleship-game/blob/main/media/ship6-sunk.png)
 
 - __The game ends when either the user or the computer sinks all of the opponent's ships.__
 
 - __The winner is announced at the end of the game, and the user is given the option to play again.__
+
 ![You Won!](https://github.com/Ellusive89/battleship-game/blob/main/media/you-won.png)
+
 ![Play again?](https://github.com/Ellusive89/battleship-game/blob/main/media/play-again.png)
 
 - __If the player decides to exit the game, a message expressing gratitude for playing will be shown. If the player chooses to play again, the game will restart.__
+
 ![Play again NO](https://github.com/Ellusive89/battleship-game/blob/main/media/play-again-no.png)
 
 ## Implemented Features
@@ -78,6 +87,7 @@ I have extensively tested the game to ensure it is functional and responsive.
 ## Validation
 
 - __This game passes through the Code Institute PEP8 Validator with no errors.__
+
 ![Validation](https://github.com/Ellusive89/battleship-game/blob/main/media/python-validator-ci.png)
 
 ## Technologies
